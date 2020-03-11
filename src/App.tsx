@@ -1,5 +1,5 @@
 import React from "react";
-import { ICustomer } from "./Components/Customer";
+import { ICustomer, Customer } from "./Components/Customer";
 
 const genId = () =>
   Math.random()
@@ -20,7 +20,7 @@ const fakeDataFromDatabase: ICustomer[] = [
             title: "Junior developer",
             isEmpty: false,
             image:
-              "https://pbs.twimg.com/profile_images/442803888798720000/J9vCKjHf_400x400.png",
+              "https://cdn.theatlantic.com/thumbor/rw3VIckWO6T6y_xYc-Q12U0tNAQ=/68x29:1211x672/720x405/media/img/upload/wire/2014/05/19/shrek1/original.jpg",
             name: "shrek"
           },
           {
@@ -28,15 +28,60 @@ const fakeDataFromDatabase: ICustomer[] = [
             title: "Senior developer",
             isEmpty: false,
             image:
-              "https://images-na.ssl-images-amazon.com/images/I/51-2knqQUtL._AC_UX385_.jpg",
+              "https://i.pinimg.com/600x315/2c/c0/c9/2cc0c9c19f0ee720f8aee7d8185e55e1.jpg",
             name: "dunkey"
           },
           {
             id: genId(),
             title: "Middle developer",
             isEmpty: false,
+            image: "https://memepedia.ru/wp-content/uploads/2018/04/e.jpg",
+            name: "farquaad"
+          },
+          {
+            id: genId(),
+            title: "Android developer",
+            isEmpty: true
+          },
+          {
+            id: genId(),
+            title: "Homosexual developer",
+            isEmpty: true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: genId(),
+    name: "Yandex",
+    opps: [
+      {
+        id: genId(),
+        title: "Cheburashka",
+        due: new Date(2020, 1, 12),
+        positions: [
+          {
+            id: genId(),
+            title: "Junior developer",
+            isEmpty: false,
             image:
-              "https://pbs.twimg.com/media/EDYs8c3XUAAIUlU?format=jpg&name=900x900",
+              "https://cdn.theatlantic.com/thumbor/rw3VIckWO6T6y_xYc-Q12U0tNAQ=/68x29:1211x672/720x405/media/img/upload/wire/2014/05/19/shrek1/original.jpg",
+            name: "shrek"
+          },
+          {
+            id: genId(),
+            title: "Senior developer",
+            isEmpty: false,
+            image:
+              "https://i.pinimg.com/600x315/2c/c0/c9/2cc0c9c19f0ee720f8aee7d8185e55e1.jpg",
+            name: "dunkey"
+          },
+          {
+            id: genId(),
+            title: "Middle developer",
+            isEmpty: false,
+            image: "https://memepedia.ru/wp-content/uploads/2018/04/e.jpg",
             name: "farquaad"
           },
           {
@@ -56,7 +101,13 @@ const fakeDataFromDatabase: ICustomer[] = [
 ];
 
 function App() {
-  return <div className="flexbox"></div>;
+  return (
+    <div className="grid">
+      {fakeDataFromDatabase.map(customer => {
+        return <Customer {...customer} key={customer.id} />;
+      })}
+    </div>
+  );
 }
 
 export default App;

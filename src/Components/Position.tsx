@@ -1,7 +1,18 @@
 import React from "react";
 
 export const Position = (props: IPosition) => {
-  return <div></div>;
+  if (props.isEmpty) {
+    return <div>Empty</div>;
+  } else {
+    return (
+      <div className="position" key={props.id}>
+        <div className="avatar">
+          <img src={props.image}></img>
+        </div>
+        <div className="title">{props.title}</div>
+      </div>
+    );
+  }
 };
 
 export interface IPosition {
