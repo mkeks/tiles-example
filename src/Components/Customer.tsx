@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IOpportunity, Opportunity } from "./Opportunity";
 
-export const Customer = (props: ICustomer) => {
+export const Customer = (props: ICustomer & { callback: Function }) => {
   const [ref, setRef] = useState<HTMLDivElement>();
   const gridSize = () => {
     if (ref?.parentElement?.parentElement) {
@@ -33,7 +33,12 @@ export const Customer = (props: ICustomer) => {
       >
         <h1>{props.name}</h1>
         {props.opps.map(opp => {
-          return <Opportunity {...opp} key={opp.id} />;
+          return (
+            <Opportunity
+              {...{ callback: props.callback, ...opp }}
+              key={opp.id}
+            />
+          );
         })}
       </div>
     </div>

@@ -1,12 +1,16 @@
 import React from "react";
 import { IPosition, Position } from "./Position";
 
-export const Opportunity = (props: IOpportunity) => {
+export const Opportunity = (props: IOpportunity & { callback: Function }) => {
   return (
     <div className="opportunity" key={props.id}>
       <div
         className="title"
-        style={{ fontWeight: "bold", float: "left", marginBottom: "10px" }}
+        style={{
+          fontWeight: "bold",
+          float: "left",
+          marginBottom: "10px"
+        }}
       >
         {props.title}
       </div>
@@ -15,7 +19,12 @@ export const Opportunity = (props: IOpportunity) => {
       </div>
       <div className="positions">
         {props.positions.map(position => {
-          return <Position {...position} key={position.id} />;
+          return (
+            <Position
+              {...{ callback: props.callback, ...position }}
+              key={position.id}
+            />
+          );
         })}
       </div>
     </div>

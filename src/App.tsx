@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { ICustomer, Customer } from "./Components/Customer";
+import { DndProvider } from "react-dnd";
+import Backend from "react-dnd-html5-backend";
+import { ICandidate } from "./Components/Candidate";
+import { Customer, ICustomer } from "./Components/Customer";
 import { fakeData } from "./Components/FakeDatabase";
 import { IOpportunity } from "./Components/Opportunity";
 import { IPosition } from "./Components/Position";
-import { ICandidate } from "./Components/Candidate";
 
 function App() {
   const [customers, setCustomers] = useState<ICustomer[]>(fakeData);
@@ -12,6 +14,7 @@ function App() {
     sourcePositionId: string,
     targetPositionId: string
   ): void => {
+    debugger;
     const source = getPositionFamily(sourcePositionId, customers);
     const target = getPositionFamily(targetPositionId, customers);
     if (!source || !target) {
@@ -22,23 +25,27 @@ function App() {
       );
       return;
     }
-    const sourceCustomerIndex = customers.indexOf(source.customer);
-    const targetCustomerIndex = customers.indexOf(target.customer);
     const candidate = source.position.candidate as ICandidate;
     source.position.candidate = undefined;
     target.position.candidate = candidate;
-    setCustomers({
-      ...customers,
-      [sourceCustomerIndex]: source.customer,
-      [targetCustomerIndex]: target.customer
-    });
+    let newCustomers = customers.slice();
+    newCustomers[customers.indexOf(source.customer)] = source.customer;
+    newCustomers[customers.indexOf(target.customer)] = target.customer;
+    setCustomers(newCustomers);
   };
   return (
-    <div className="grid">
-      {customers.map(customer => {
-        return <Customer {...customer} key={customer.id} />;
-      })}
-    </div>
+    <DndProvider backend={Backend}>
+      <div className="grid">
+        {customers.map(customer => {
+          return (
+            <Customer
+              {...{ callback: moveCandidate, ...customer }}
+              key={customer.id}
+            />
+          );
+        })}
+      </div>
+    </DndProvider>
   );
 }
 

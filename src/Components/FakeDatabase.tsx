@@ -1,5 +1,5 @@
-import { ICustomer } from "./Customer";
 import { ICandidate } from "./Candidate";
+import { ICustomer } from "./Customer";
 
 const genId = (): string =>
   Math.random()
