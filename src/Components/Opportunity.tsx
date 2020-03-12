@@ -4,8 +4,15 @@ import { IPosition, Position } from "./Position";
 export const Opportunity = (props: IOpportunity) => {
   return (
     <div className="opportunity" key={props.id}>
-      <div className="title">{props.title}</div>
-      <div className="dueDate">{props.due.toDateString()}</div>
+      <div
+        className="title"
+        style={{ fontWeight: "bold", float: "left", marginBottom: "10px" }}
+      >
+        {props.title}
+      </div>
+      <div className="dueDate" style={{ fontWeight: "bold" }}>
+        Due date: {props.due.toDateString()}
+      </div>
       <div className="positions">
         {props.positions.map(position => {
           return <Position {...position} key={position.id} />;
