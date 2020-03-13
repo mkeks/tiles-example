@@ -1,7 +1,9 @@
 import React from "react";
 
-export const Candidate = () => {
-  return <div>candidate</div>;
+type Props = ICandidate;
+
+export const Candidate = (props: Props) => {
+  return <div>{props.name}</div>;
 };
 
 export interface ICandidate {

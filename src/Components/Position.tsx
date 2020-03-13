@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { ICandidate } from "./Candidate";
 
-export const Position = (props: IPosition & { callback: Function }) => {
+type Props = IPosition & { callback: Function };
+
+export const Position = (props: Props) => {
   const [{ isDragging }, drag] = useDrag({
     item: { type: "position", id: props.id },
     collect: monitor => ({
@@ -22,17 +24,25 @@ export const Position = (props: IPosition & { callback: Function }) => {
     })
   });
 
+  const [renderDropdown, setRenderDropdown] = useState<boolean>(false);
+
   if (props.candidate) {
     return (
       <div
         className="position"
-        key={props.id}
         ref={drag}
         style={{ opacity: isDragging ? 0 : 1, cursor: "pointer" }}
       >
         <div className="avatar">
           <img src={props.candidate.avatar} alt="Posiion avatar"></img>
         </div>
+        <button
+          type="button"
+          style={{ float: "right" }}
+          onClick={() => props.callback(props.id)}
+        >
+          X
+        </button>
         <div className="name" style={{ textAlign: "left" }}>
           {props.candidate.name}
         </div>
@@ -48,7 +58,6 @@ export const Position = (props: IPosition & { callback: Function }) => {
     return (
       <div
         className="position"
-        key={props.id}
         ref={drop}
         style={{ backgroundColor: canDrop && isOver ? "grey" : "" }}
       >
@@ -57,6 +66,7 @@ export const Position = (props: IPosition & { callback: Function }) => {
             src={
               "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/1200px-Plus_symbol.svg.png"
             }
+            onClick={() => console.log(props.id)}
             alt="Posiion avatar"
           ></img>
         </div>
@@ -79,3 +89,22 @@ export interface IPosition {
   title: string;
   candidate?: ICandidate;
 }
+
+/*  function useOutsideAlerter(ref: any) {
+    function handleClickOutside(event: any) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        alert("You clicked outside of me!");
+      }
+    }
+
+    useEffect(() => {
+      // Bind the event listener
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        // Unbind the event listener on clean up
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    });
+  }
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef); */

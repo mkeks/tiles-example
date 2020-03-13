@@ -1,9 +1,11 @@
 import React from "react";
 import { IPosition, Position } from "./Position";
 
-export const Opportunity = (props: IOpportunity & { callback: Function }) => {
+type Props = IOpportunity & { callback: Function };
+
+export const Opportunity = (props: Props) => {
   return (
-    <div className="opportunity" key={props.id}>
+    <div className="opportunity">
       <div
         className="title"
         style={{

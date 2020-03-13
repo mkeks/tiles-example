@@ -18,8 +18,8 @@ code {
   justify-content: center;
   display: grid;
   grid-gap: 15px;
-  grid-template-columns: repeat(auto-fill, 500px);
-  grid-auto-rows: 20px;
+  grid-template-columns: repeat(auto-fill, 600px);
+  grid-auto-rows: 1em;
 }
 
 .customer {
@@ -48,6 +48,24 @@ code {
 
 .position {
   background: #ebebeb;
+}
+
+.position button {
+  background: lightgrey;
+  color: black;
+  border: none;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  margin: 5px;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 0.7;
+  border-radius: 15px;
+}
+
+.position button:active {
+  background: grey;
 }
 
 .avatar img {

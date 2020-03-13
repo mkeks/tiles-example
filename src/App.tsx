@@ -3,35 +3,52 @@ import { DndProvider } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
 import { ICandidate } from "./Components/Candidate";
 import { Customer, ICustomer } from "./Components/Customer";
-import { fakeData } from "./Components/FakeDatabase";
-import { IOpportunity } from "./Components/Opportunity";
+import { fakeData, fakeCandidates } from "./Components/FakeDatabase";
+import { IOpportunity, Opportunity } from "./Components/Opportunity";
 import { IPosition } from "./Components/Position";
 
 function App() {
   const [customers, setCustomers] = useState<ICustomer[]>(fakeData);
-
-  const moveCandidate = (
-    sourcePositionId: string,
-    targetPositionId: string
-  ): void => {
-    debugger;
-    const source = getPositionFamily(sourcePositionId, customers);
-    const target = getPositionFamily(targetPositionId, customers);
-    if (!source || !target) {
-      console.log(
-        "Could not find a position with this id: " + source
-          ? targetPositionId
-          : sourcePositionId
-      );
-      return;
+  const [unemployed, setUnemployed] = useState<ICandidate[]>(
+    getUnemployed(customers)
+  );
+  const moveCandidate = (sourceId: string, targetId?: string): void => {
+    if (targetId) {
+      const source = getPositionFamily(sourceId, customers);
+      const target = getPositionFamily(targetId, customers);
+      if (!target) {
+        console.log("Could not find a position with this id: " + targetId);
+        return;
+      }
+      if (!source) {
+        const sourceCandidate = unemployed.find(c => c.id === sourceId);
+        target.position.candidate = sourceCandidate;
+        let newCustomers = customers.slice();
+        newCustomers[customers.indexOf(target.customer)] = target.customer;
+        setCustomers(newCustomers);
+        setUnemployed(getUnemployed(customers));
+      } else {
+        const candidate = source.position.candidate as ICandidate;
+        source.position.candidate = undefined;
+        target.position.candidate = candidate;
+        let newCustomers = customers.slice();
+        newCustomers[customers.indexOf(source.customer)] = source.customer;
+        newCustomers[customers.indexOf(target.customer)] = target.customer;
+        setCustomers(newCustomers);
+      }
+    } else {
+      const source = getPositionFamily(sourceId, customers);
+      if (!source) {
+        console.log("Could not find a position with this id: " + sourceId);
+        return;
+      }
+      const candidate = source.position.candidate as ICandidate;
+      source.position.candidate = undefined;
+      let newCustomers = customers.slice();
+      newCustomers[customers.indexOf(source.customer)] = source.customer;
+      setCustomers(newCustomers);
+      setUnemployed(getUnemployed(customers));
     }
-    const candidate = source.position.candidate as ICandidate;
-    source.position.candidate = undefined;
-    target.position.candidate = candidate;
-    let newCustomers = customers.slice();
-    newCustomers[customers.indexOf(source.customer)] = source.customer;
-    newCustomers[customers.indexOf(target.customer)] = target.customer;
-    setCustomers(newCustomers);
   };
   return (
     <DndProvider backend={Backend}>
@@ -69,5 +86,13 @@ const getPositionFamily = (
         }
   return null;
 };
-
+const getUnemployed = (allCustomers: ICustomer[]): ICandidate[] => {
+  const candidates = fakeCandidates;
+  let emploeyd: ICandidate[] = [];
+  for (let _customer of allCustomers)
+    for (let _opportunity of _customer.opps)
+      for (let _position of _opportunity.positions)
+        if (_position.candidate) emploeyd.push(_position.candidate);
+  return candidates.filter(x => !emploeyd.includes(x));
+};
 export default App;

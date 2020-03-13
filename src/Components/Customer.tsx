@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { IOpportunity, Opportunity } from "./Opportunity";
 
-export const Customer = (props: ICustomer & { callback: Function }) => {
+type Props = ICustomer & { callback: Function };
+
+export const Customer = (props: Props) => {
   const [ref, setRef] = useState<HTMLDivElement>();
   const gridSize = () => {
     if (ref?.parentElement?.parentElement) {
