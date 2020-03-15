@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { ICandidate } from "./Candidate";
 
-type Props = IPosition & { callback: Function };
+type Props = IPosition & { callback: Function; displayDropdown: Function };
 
 export const Position = (props: Props) => {
   const [{ isDragging }, drag] = useDrag({
@@ -24,64 +24,51 @@ export const Position = (props: Props) => {
     })
   });
 
-  const [renderDropdown, setRenderDropdown] = useState<boolean>(false);
-
-  if (props.candidate) {
-    return (
-      <div
-        className="position"
-        ref={drag}
-        style={{ opacity: isDragging ? 0 : 1, cursor: "pointer" }}
-      >
-        <div className="avatar">
-          <img src={props.candidate.avatar} alt="Posiion avatar"></img>
-        </div>
-        <button
-          type="button"
-          style={{ float: "right" }}
-          onClick={() => props.callback(props.id)}
-        >
-          X
-        </button>
-        <div className="name" style={{ textAlign: "left" }}>
-          {props.candidate.name}
-        </div>
-        <div
-          className="title"
-          style={{ textAlign: "left", fontWeight: "bold" }}
-        >
-          {props.title}
-        </div>
+  const position = (
+    <div
+      key="position"
+      className="position"
+      ref={props.candidate ? drag : drop}
+      style={{
+        opacity: isDragging ? 0 : 1,
+        cursor: "pointer",
+        backgroundColor: canDrop && isOver ? "grey" : ""
+      }}
+    >
+      <div className="avatar">
+        <img
+          src={
+            props.candidate?.avatar ||
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/1200px-Plus_symbol.svg.png"
+          }
+          onClick={
+            props.candidate
+              ? undefined
+              : event =>
+                  props.displayDropdown(props.id, {
+                    x: event.clientX,
+                    y: event.clientY
+                  })
+          }
+          alt="Avatar"
+        ></img>
       </div>
-    );
-  } else {
-    return (
-      <div
-        className="position"
-        ref={drop}
-        style={{ backgroundColor: canDrop && isOver ? "grey" : "" }}
+      <button
+        type="button"
+        style={{ float: "right", display: props.candidate ? "" : "none" }}
+        onClick={() => props.callback(props.id)}
       >
-        <div className="avatar">
-          <img
-            src={
-              "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/1200px-Plus_symbol.svg.png"
-            }
-            onClick={() => console.log(props.id)}
-            alt="Posiion avatar"
-          ></img>
-        </div>
-        <div className="name" style={{ textAlign: "left" }}>
-          Staffing
-        </div>
-        <div
-          className="title"
-          style={{ textAlign: "left", fontWeight: "bold" }}
-        >
-          {props.title}
-        </div>
+        X
+      </button>
+      <div className="name" style={{ textAlign: "left" }}>
+        {props.candidate?.name || "Staffing"}
       </div>
-    );
-  }
+      <div className="title" style={{ textAlign: "left", fontWeight: "bold" }}>
+        {props.title}
+      </div>
+    </div>
+  );
+  return position;
 };
 
 export interface IPosition {
@@ -89,22 +76,3 @@ export interface IPosition {
   title: string;
   candidate?: ICandidate;
 }
-
-/*  function useOutsideAlerter(ref: any) {
-    function handleClickOutside(event: any) {
-      if (ref.current && !ref.current.contains(event.target)) {
-        alert("You clicked outside of me!");
-      }
-    }
-
-    useEffect(() => {
-      // Bind the event listener
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        // Unbind the event listener on clean up
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    });
-  }
-  const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef); */

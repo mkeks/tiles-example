@@ -1,7 +1,7 @@
 import React from "react";
 import { IPosition, Position } from "./Position";
 
-type Props = IOpportunity & { callback: Function };
+type Props = IOpportunity & { callback: Function; displayDropdown: Function };
 
 export const Opportunity = (props: Props) => {
   return (
@@ -23,7 +23,11 @@ export const Opportunity = (props: Props) => {
         {props.positions.map(position => {
           return (
             <Position
-              {...{ callback: props.callback, ...position }}
+              {...{
+                displayDropdown: props.displayDropdown,
+                callback: props.callback,
+                ...position
+              }}
               key={position.id}
             />
           );

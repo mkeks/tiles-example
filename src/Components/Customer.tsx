@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IOpportunity, Opportunity } from "./Opportunity";
 
-type Props = ICustomer & { callback: Function };
+type Props = ICustomer & { callback: Function; displayDropdown: Function };
 
 export const Customer = (props: Props) => {
   const [ref, setRef] = useState<HTMLDivElement>();
@@ -37,7 +37,11 @@ export const Customer = (props: Props) => {
         {props.opps.map(opp => {
           return (
             <Opportunity
-              {...{ callback: props.callback, ...opp }}
+              {...{
+                displayDropdown: props.displayDropdown,
+                callback: props.callback,
+                ...opp
+              }}
               key={opp.id}
             />
           );
