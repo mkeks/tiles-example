@@ -17,9 +17,9 @@ code {
   margin: auto;
   justify-content: center;
   display: grid;
-  grid-gap: 15px;
-  grid-template-columns: repeat(auto-fill, 600px);
+  grid-gap: 1em;
   grid-auto-rows: 1em;
+  grid-template-columns: repeat(auto-fill, 595px);
 }
 
 .customer {

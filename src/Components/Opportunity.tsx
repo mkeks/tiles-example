@@ -12,13 +12,21 @@ export const Opportunity = (props: Props) => {
         style={{
           fontWeight: "bold",
           float: "left",
-          marginBottom: "10px"
+          marginBottom: "10px",
+          fontSize: "x-large"
         }}
       >
         {props.title}
       </div>
-      <div className="dueDate" style={{ fontWeight: "bold" }}>
-        Due date: {props.due.toDateString()}
+      <div
+        className="dueDate"
+        style={{
+          fontWeight: "bold",
+          float: "right",
+          marginBottom: "10px"
+        }}
+      >
+        Due: {props.due.toISOString().substring(0, 10)}
       </div>
       <div className="positions">
         {props.positions.map(position => {
