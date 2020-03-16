@@ -1821,6 +1821,29 @@ const generateFakeData = (): {
     "Senior Backend Developer (NodeJS)"
   ];
 
+  const seniorities = [
+    "Senior Developer",
+    "Middle Developer",
+    "Junior Developer",
+    "Senior Frontend Developer",
+    "Middle Frontend Developer",
+    "Junior Frontend Developer",
+    "Senior Backend Developer",
+    "Middle Backend Developer",
+    "Junior Backend Developer"
+  ];
+
+  const techStacks = [
+    "Node JS",
+    "ASP.NET",
+    ".NET",
+    "React",
+    "Angular",
+    "Vue.js",
+    "Linux",
+    "MySql"
+  ];
+
   let _candidates: ICandidate[] = [];
   let _customers: ICustomer[] = generateCustomers();
   let rnd = randomNumber(4, 7);
@@ -1866,7 +1889,9 @@ const generateFakeData = (): {
     const candidate: ICandidate = {
       id: genId(),
       name: candidateName,
-      avatar: getAvatar(encodeURI(candidateName))
+      avatar: getAvatar(encodeURI(candidateName)),
+      seniority: seniorities[randomNumber(0, seniorities.length - 1)],
+      techStack: techStacks[randomNumber(0, techStacks.length - 1)]
     };
     _candidates.push(candidate);
     return candidate;

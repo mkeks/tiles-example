@@ -1,18 +1,15 @@
 import React, { useEffect, useRef } from "react";
-import { ICandidate, Candidate } from "./Candidate";
 
 type Props = {
-  dropDownData: ICandidate[];
   location: { x: number; y: number };
-  closeDropDown: Function;
-  setCandidatePosition: Function;
+  onClose: Function;
 };
 
-export const DropDown = (props: Props) => {
+export const PopUp: React.FunctionComponent<Props> = props => {
   function useOutsideAlerter(ref: any) {
     function handleClickOutside(event: any) {
       if (ref.current && !ref.current.contains(event.target)) {
-        props.closeDropDown();
+        props.onClose();
       }
     }
 
@@ -29,7 +26,7 @@ export const DropDown = (props: Props) => {
 
   return (
     <div
-      className="dropDown"
+      className="popUp"
       style={{
         position: "absolute",
         top: props.location.y,
@@ -37,20 +34,7 @@ export const DropDown = (props: Props) => {
       }}
       ref={wrapperRef}
     >
-      {props.dropDownData.map(candidate => {
-        return (
-          <Candidate
-            {...{
-              onCandidateSelect: (candidateId: string) => {
-                props.setCandidatePosition(candidateId);
-                props.closeDropDown(null);
-              },
-              ...candidate
-            }}
-            key={candidate.id}
-          />
-        );
-      })}
+      {props.children}
     </div>
   );
 };

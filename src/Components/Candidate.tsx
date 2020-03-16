@@ -20,4 +20,7 @@ export interface ICandidate {
   id: string;
   name: string;
   avatar: string;
+  seniority: string;
+  techStack: string;
+  positionId?: string;
 }
