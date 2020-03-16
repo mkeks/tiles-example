@@ -1,22 +1,17 @@
 import React, { useState } from "react";
 import { DndProvider } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
-import { ICandidate, Candidate } from "./Components/Candidate";
+import { ICandidate } from "./Components/Candidate";
 import { Customer, ICustomer } from "./Components/Customer";
 import { fakeData, fakeCandidates } from "./Components/FakeDatabase";
 import { IOpportunity } from "./Components/Opportunity";
-import { IPosition, Position } from "./Components/Position";
+import { IPosition } from "./Components/Position";
 
 function App() {
   const [customers, setCustomers] = useState<ICustomer[]>(fakeData);
   const [unemployed, setUnemployed] = useState<ICandidate[]>(
     getUnemployed(customers)
   );
-  const [displayDropDown, setDisplayDropDown] = useState<boolean>(false);
-  const [lastClickPosition, setLastClickPosition] = useState<{
-    x: number;
-    y: number;
-  }>({ x: 0, y: 0 });
   const moveCandidate = (sourceId: string, targetId?: string): void => {
     if (targetId) {
       const source = getPositionFamily(sourceId, customers);
@@ -54,27 +49,6 @@ function App() {
       setUnemployed(getUnemployed(customers));
     }
   };
-  const dropDown = (
-    <div
-      className="dropDown"
-      style={{
-        position: "absolute",
-        top: lastClickPosition.y,
-        left: lastClickPosition.x
-      }}
-    >
-      {unemployed.map(candidate => {
-        return <Candidate {...candidate} key={candidate.id} />;
-      })}
-    </div>
-  );
-  const renderDropDown = (
-    positionId: string,
-    position: { x: number; y: number }
-  ) => {
-    setLastClickPosition(position);
-    setDisplayDropDown(true);
-  };
   return (
     <DndProvider backend={Backend}>
       <div className="grid">
@@ -82,7 +56,7 @@ function App() {
           return (
             <Customer
               {...{
-                displayDropdown: renderDropDown,
+                dropDownData: unemployed,
                 callback: moveCandidate,
                 ...customer
               }}
@@ -91,7 +65,6 @@ function App() {
           );
         })}
       </div>
-      {displayDropDown ? dropDown : ""}
     </DndProvider>
   );
 }

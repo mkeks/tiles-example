@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { IOpportunity, Opportunity } from "./Opportunity";
+import { ICandidate } from "./Candidate";
 
-type Props = ICustomer & { callback: Function; displayDropdown: Function };
+type Props = ICustomer & { callback: Function; dropDownData: ICandidate[] };
 
 export const Customer = (props: Props) => {
   const [ref, setRef] = useState<HTMLDivElement>();
@@ -38,7 +39,7 @@ export const Customer = (props: Props) => {
           return (
             <Opportunity
               {...{
-                displayDropdown: props.displayDropdown,
+                dropDownData: props.dropDownData,
                 callback: props.callback,
                 ...opp
               }}

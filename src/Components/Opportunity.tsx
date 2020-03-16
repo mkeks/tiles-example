@@ -1,7 +1,8 @@
 import React from "react";
 import { IPosition, Position } from "./Position";
+import { ICandidate } from "./Candidate";
 
-type Props = IOpportunity & { callback: Function; displayDropdown: Function };
+type Props = IOpportunity & { callback: Function; dropDownData: ICandidate[] };
 
 export const Opportunity = (props: Props) => {
   return (
@@ -24,7 +25,7 @@ export const Opportunity = (props: Props) => {
           return (
             <Position
               {...{
-                displayDropdown: props.displayDropdown,
+                dropDownData: props.dropDownData,
                 callback: props.callback,
                 ...position
               }}

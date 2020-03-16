@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { ICandidate } from "./Candidate";
+import { DropDown } from "./DropDown";
 
-type Props = IPosition & { callback: Function; displayDropdown: Function };
+type Props = IPosition & { callback: Function; dropDownData: ICandidate[] };
 
 export const Position = (props: Props) => {
   const [{ isDragging }, drag] = useDrag({
@@ -15,7 +16,6 @@ export const Position = (props: Props) => {
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: "position",
     drop: (item: any) => {
-      console.log(`moving ${item.id} to ${props.id}`);
       props.callback(item.id, props.id);
     },
     collect: monitor => ({
@@ -24,7 +24,12 @@ export const Position = (props: Props) => {
     })
   });
 
-  const position = (
+  const [displayDropDownAt, setDisplayDropDownAt] = useState<{
+    x: number;
+    y: number;
+  } | null>();
+
+  return (
     <div
       key="position"
       className="position"
@@ -44,11 +49,9 @@ export const Position = (props: Props) => {
           onClick={
             props.candidate
               ? undefined
-              : event =>
-                  props.displayDropdown(props.id, {
-                    x: event.clientX,
-                    y: event.clientY
-                  })
+              : event => {
+                  setDisplayDropDownAt({ x: event.pageX, y: event.pageY });
+                }
           }
           alt="Avatar"
         ></img>
@@ -66,9 +69,23 @@ export const Position = (props: Props) => {
       <div className="title" style={{ textAlign: "left", fontWeight: "bold" }}>
         {props.title}
       </div>
+      {displayDropDownAt ? (
+        <DropDown
+          {...{
+            dropDownData: props.dropDownData,
+            location: displayDropDownAt,
+            parentId: props.id,
+            closeDropDown: () => {
+              setDisplayDropDownAt(null);
+            },
+            setCandidatePosition: (candidateId: string) => {
+              props.callback(candidateId, props.id);
+            }
+          }}
+        />
+      ) : null}
     </div>
   );
-  return position;
 };
 
 export interface IPosition {
