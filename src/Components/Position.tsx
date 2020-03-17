@@ -82,7 +82,7 @@ export const Position = (props: Props) => {
         {props.candidate?.name || "Staffing"}
       </div>
       <div className="title" style={{ textAlign: "left", fontWeight: "bold" }}>
-        {props.title}
+        {props.candidate ? props.candidate.techStack : ""}
       </div>
       {addPopUpPos ? (
         <PopUp

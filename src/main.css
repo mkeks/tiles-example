@@ -12,14 +12,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+.flex-container {
+  display: flex;
+  border-bottom: 1px solid black;
+  margin: 0px 14px 0px 14px;
+}
 
-.grid {
-  margin: auto;
-  justify-content: center;
-  display: grid;
-  grid-gap: 1em;
-  grid-auto-rows: 1em;
-  grid-template-columns: repeat(auto-fill, 595px);
+.flex-container div {
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-align: center;
 }
 
 .customer {
@@ -28,26 +30,50 @@ code {
   border-radius: 10px;
   text-align: center;
   color: aliceblue;
+  margin: 10px;
+  padding-bottom: 5px;
 }
 
 .opportunity {
+  display: flex;
   background: whitesmoke;
   color: black;
   margin: 10px;
   border-radius: 10px;
   padding: 3px;
   color: #353535;
+  align-items: center;
+  justify-content: center;
 }
 
 .positions {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 5px;
 }
 
 .position {
   background: #ebebeb;
+}
+
+.collapse {
+  float: left;
+  margin-left: 10px;
+  margin-top: 8px;
+  padding: 0px;
+  color: white;
+  font-size: x-large;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+}
+
+.collapse:hover {
+  color: lightgray;
+}
+.collapse:active {
+  color: darkgray;
 }
 
 .position button {

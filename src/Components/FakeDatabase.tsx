@@ -1875,9 +1875,11 @@ const generateFakeData = (): {
   }
   function generatePositions(): IPosition[] {
     let result: IPosition[] = [];
-    for (let position of getRandom(positions, randomNumber(3, 6))) {
-      let candidate = Math.random() < 0.6 ? generateCandidate() : undefined;
-      result.push({ id: genId(), title: position, candidate });
+    for (let position of getRandom(positions, randomNumber(1, 3))) {
+      for (let i = 0; i < randomNumber(1, 6); i++) {
+        let candidate = Math.random() < 0.6 ? generateCandidate() : undefined;
+        result.push({ id: genId(), title: position, candidate });
+      }
     }
     return result;
   }

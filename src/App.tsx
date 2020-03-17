@@ -51,7 +51,13 @@ function App() {
   };
   return (
     <DndProvider backend={Backend}>
-      <div className="grid">
+      <div className="flex-container">
+        <div style={{ flex: "1 1" }}>Opportunity</div>
+        <div style={{ flex: "1 1" }}>Due Date</div>
+        <div style={{ flex: "1 1" }}>Position</div>
+        <div style={{ flex: "5 5" }}>Candidates</div>
+      </div>
+      <div className="table">
         {customers.map(customer => {
           return (
             <Customer

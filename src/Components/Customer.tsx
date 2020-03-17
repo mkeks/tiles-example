@@ -5,51 +5,67 @@ import { ICandidate } from "./Candidate";
 type Props = ICustomer & { callback: Function; dropDownData: ICandidate[] };
 
 export const Customer = (props: Props) => {
-  const [ref, setRef] = useState<HTMLDivElement>();
-  const gridSize = () => {
-    if (ref?.parentElement?.parentElement) {
-      const grid = ref!.parentElement!.parentElement;
-      const title = ref!.firstChild as HTMLElement;
-      const rowHeight = parseInt(
-        window.getComputedStyle(grid).getPropertyValue("grid-auto-rows")
-      );
-      const rowGap = parseInt(
-        window.getComputedStyle(grid).getPropertyValue("grid-row-gap")
-      );
-      const rowSpan = Math.ceil(
-        (ref.clientHeight + rowGap + title.clientHeight / 2) /
-          (rowHeight + rowGap)
-      );
-      return "span " + rowSpan;
-    }
-    return 0;
-  };
+  const [isCollapsed, collapse] = useState<boolean>(false);
   return (
-    <div className="customer" style={{ gridRowEnd: gridSize() }}>
-      <div
-        className="content"
-        ref={ref => {
-          if (ref) {
-            setRef(ref);
-          }
-        }}
-      >
-        <h1>{props.name}</h1>
+    <div className="customer">
+      <div className="header" style={{ display: "flex" }}>
+        <div
+          className="collapse"
+          onClick={event => {
+            collapse(!isCollapsed);
+          }}
+        >
+          {isCollapsed ? "▼" : "▲"}
+        </div>
+        <div
+          className="title"
+          style={{
+            textAlign: "left",
+            marginLeft: "10px",
+            fontSize: "xx-large",
+            fontWeight: "bold"
+          }}
+        >
+          {props.name}
+        </div>
+      </div>
+      <div className="content" style={{ display: isCollapsed ? "none" : "" }}>
         {props.opps.map(opp => {
-          return (
-            <Opportunity
-              {...{
-                dropDownData: props.dropDownData,
-                callback: props.callback,
-                ...opp
-              }}
-              key={opp.id}
-            />
-          );
+          return separateByPositionName(opp).map(sortedOpp => {
+            return (
+              <Opportunity
+                {...{
+                  dropDownData: props.dropDownData,
+                  callback: props.callback,
+                  ...sortedOpp
+                }}
+                key={sortedOpp.id}
+              />
+            );
+          });
         })}
       </div>
     </div>
   );
+};
+
+const separateByPositionName = (opp: IOpportunity): IOpportunity[] => {
+  let dict = new Map<string, IOpportunity>();
+  for (let pos of opp.positions) {
+    if (dict.has(pos.title)) {
+      let temp = dict.get(pos.title)!;
+      temp.positions.push(pos);
+      dict.set(pos.title, temp);
+    } else {
+      dict.set(pos.title, {
+        id: opp.id,
+        title: opp.title,
+        due: opp.due,
+        positions: [pos]
+      });
+    }
+  }
+  return Array.from(dict.values());
 };
 
 export interface ICustomer {

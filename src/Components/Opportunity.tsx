@@ -8,27 +8,33 @@ export const Opportunity = (props: Props) => {
   return (
     <div className="opportunity">
       <div
-        className="title"
         style={{
           fontWeight: "bold",
-          float: "left",
-          marginBottom: "10px",
-          fontSize: "x-large"
+          fontSize: "large",
+          flex: "1 1"
         }}
       >
         {props.title}
       </div>
       <div
-        className="dueDate"
         style={{
           fontWeight: "bold",
-          float: "right",
+          flex: "1 1",
           marginBottom: "10px"
         }}
       >
-        Due: {props.due.toISOString().substring(0, 10)}
+        {props.due.toISOString().substring(0, 10)}
       </div>
-      <div className="positions">
+      <div
+        style={{
+          fontWeight: "bold",
+          flex: "1 1",
+          marginBottom: "10px"
+        }}
+      >
+        {props.positions[0].title}
+      </div>
+      <div className="positions" style={{ flex: "5 5" }}>
         {props.positions.map(position => {
           return (
             <Position
