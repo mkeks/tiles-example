@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 type Props = {
   location: { x: number; y: number };
   onClose: Function;
+  style?: React.CSSProperties;
 };
 
 export const PopUp: React.FunctionComponent<Props> = props => {
@@ -21,18 +22,21 @@ export const PopUp: React.FunctionComponent<Props> = props => {
     });
   }
 
+  const style: React.CSSProperties = {
+    background: "white",
+    position: "absolute",
+    top: props.location.y,
+    left: props.location.x,
+    width: 250
+  };
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
 
   return (
     <div
       className="popUp"
-      style={{
-        position: "absolute",
-        top: props.location.y,
-        left: props.location.x
-      }}
       ref={wrapperRef}
+      style={Object.assign(style, props.style)}
     >
       {props.children}
     </div>

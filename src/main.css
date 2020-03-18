@@ -79,16 +79,18 @@ code {
 }
 
 .popUp {
-  background: white;
   border-radius: 10px;
   margin: 10px;
   padding: 10px;
-  width: 250px;
   max-height: 400px;
   overflow-y: auto scroll;
   overflow-x: auto;
 }
 
 .candidate:hover {
+  background-color: lightgrey;
+}
+.add div:hover {
+  cursor: pointer;
   background-color: lightgrey;
 }

@@ -6,12 +6,17 @@ import { Customer, ICustomer } from "./Components/Customer";
 import { fakeData, fakeCandidates } from "./Components/FakeDatabase";
 import { IOpportunity } from "./Components/Opportunity";
 import { IPosition } from "./Components/Position";
+import { PopUp } from "./Components/PopUp";
 
 function App() {
   const [customers, setCustomers] = useState<ICustomer[]>(fakeData);
   const [unemployed, setUnemployed] = useState<ICandidate[]>(
     getUnemployed(customers)
   );
+  const [displayAddPos, setDisplayAddPos] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
   const moveCandidate = (sourceId: string, targetId?: string): void => {
     if (targetId) {
       const source = getPositionFamily(sourceId, customers);
@@ -50,22 +55,60 @@ function App() {
     }
   };
   return (
-    <DndProvider backend={Backend}>
-      <div className="grid">
-        {customers.map(customer => {
-          return (
-            <Customer
-              {...{
-                dropDownData: unemployed,
-                callback: moveCandidate,
-                ...customer
-              }}
-              key={customer.id}
-            />
-          );
-        })}
-      </div>
-    </DndProvider>
+    <div>
+      <button
+        style={{
+          background: "green",
+          color: "white",
+          width: 100,
+          height: 30,
+          fontWeight: "bold",
+          textAlign: "center",
+          border: "none",
+          borderRadius: "15px",
+          margin: "0px 0px 10px 20px"
+        }}
+        onClick={event => {
+          console.log(setDisplayAddPos({ x: event.pageX, y: event.pageY }));
+        }}
+      >
+        Add
+      </button>
+      {displayAddPos ? (
+        <PopUp
+          {...{
+            location: displayAddPos,
+            onClose: () => {
+              setDisplayAddPos(null);
+            },
+            style: { width: "100", background: "#e3e3e3" }
+          }}
+        >
+          <div className="add" style={{ textAlign: "center" }}>
+            <div>Opportunity</div>
+            <div>Position</div>
+            <div>Candidate</div>
+            <div>Customer</div>
+          </div>
+        </PopUp>
+      ) : null}
+      <DndProvider backend={Backend}>
+        <div className="grid">
+          {customers.map(customer => {
+            return (
+              <Customer
+                {...{
+                  dropDownData: unemployed,
+                  callback: moveCandidate,
+                  ...customer
+                }}
+                key={customer.id}
+              />
+            );
+          })}
+        </div>
+      </DndProvider>
+    </div>
   );
 }
 
