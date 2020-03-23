@@ -1,14 +1,13 @@
 import React from "react";
 import { IPosition, Position } from "./Position";
-import { ICandidate } from "./Candidate";
+import { IGlobalProps } from "../App";
 
-type Props = IOpportunity & { callback: Function; dropDownData: ICandidate[] };
+type Props = IOpportunity & IGlobalProps;
 
 export const Opportunity = (props: Props) => {
   return (
     <div className="opportunity">
       <div
-        className="title"
         style={{
           fontWeight: "bold",
           float: "left",
@@ -19,7 +18,6 @@ export const Opportunity = (props: Props) => {
         {props.title}
       </div>
       <div
-        className="dueDate"
         style={{
           fontWeight: "bold",
           float: "right",
@@ -33,8 +31,7 @@ export const Opportunity = (props: Props) => {
           return (
             <Position
               {...{
-                dropDownData: props.dropDownData,
-                callback: props.callback,
+                ...(props as IGlobalProps),
                 ...position
               }}
               key={position.id}

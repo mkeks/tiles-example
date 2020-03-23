@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { IOpportunity, Opportunity } from "./Opportunity";
-import { ICandidate } from "./Candidate";
+import { IGlobalProps } from "../App";
 
-type Props = ICustomer & { callback: Function; dropDownData: ICandidate[] };
+type Props = ICustomer & IGlobalProps;
 
 export const Customer = (props: Props) => {
   const [ref, setRef] = useState<HTMLDivElement>();
-  const gridSize = () => {
+  const calculateGridSize = (): string => {
     if (ref?.parentElement?.parentElement) {
       const grid = ref!.parentElement!.parentElement;
-      const title = ref!.firstChild as HTMLElement;
       const rowHeight = parseInt(
         window.getComputedStyle(grid).getPropertyValue("grid-auto-rows")
       );
@@ -17,30 +16,30 @@ export const Customer = (props: Props) => {
         window.getComputedStyle(grid).getPropertyValue("grid-row-gap")
       );
       const rowSpan = Math.ceil(
-        (ref.clientHeight + rowGap + title.clientHeight / 2) /
-          (rowHeight + rowGap)
+        (ref.clientHeight + rowGap) / (rowHeight + rowGap)
       );
       return "span " + rowSpan;
     }
-    return 0;
+    return "0";
   };
   return (
-    <div className="customer" style={{ gridRowEnd: gridSize() }}>
-      <div
-        className="content"
-        ref={ref => {
-          if (ref) {
-            setRef(ref);
-          }
-        }}
-      >
-        <h1>{props.name}</h1>
+    <div className="customer" style={{ gridRowEnd: calculateGridSize() }}>
+      <div ref={ref => setRef(ref!)}>
+        <div
+          style={{
+            textAlign: "left",
+            marginLeft: "10px",
+            fontSize: "xx-large",
+            fontWeight: "bold"
+          }}
+        >
+          {props.name}
+        </div>
         {props.opps.map(opp => {
           return (
             <Opportunity
               {...{
-                dropDownData: props.dropDownData,
-                callback: props.callback,
+                ...(props as IGlobalProps),
                 ...opp
               }}
               key={opp.id}

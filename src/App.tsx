@@ -13,10 +13,7 @@ function App() {
   const [unemployed, setUnemployed] = useState<ICandidate[]>(
     getUnemployed(customers)
   );
-  const [displayAddPos, setDisplayAddPos] = useState<{
-    x: number;
-    y: number;
-  } | null>(null);
+  const [popUp, setPopUp] = useState<JSX.Element | null>(null);
   const moveCandidate = (sourceId: string, targetId?: string): void => {
     if (targetId) {
       const source = getPositionFamily(sourceId, customers);
@@ -61,45 +58,56 @@ function App() {
           background: "green",
           color: "white",
           width: 100,
-          height: 30,
           fontWeight: "bold",
-          textAlign: "center",
-          border: "none",
-          borderRadius: "15px",
           margin: "0px 0px 10px 20px"
         }}
         onClick={event => {
-          console.log(setDisplayAddPos({ x: event.pageX, y: event.pageY }));
+          setPopUp(
+            <PopUp
+              {...{
+                location: { x: event.pageX, y: event.pageY },
+                onClose: () => {
+                  setPopUp(null);
+                },
+                style: { width: "100", background: "#e3e3e3" }
+              }}
+            >
+              <div className="add" style={{ textAlign: "center" }}>
+                <div
+                  onClick={event =>
+                    setPopUp(
+                      <PopUp
+                        {...{
+                          onClose: () => {
+                            setPopUp(null);
+                          },
+                          className: "center"
+                        }}
+                      >
+                        AAAAAAASSSSSSS
+                      </PopUp>
+                    )
+                  }
+                >
+                  Candidate
+                </div>
+                <div>Customer</div>
+              </div>
+            </PopUp>
+          );
         }}
       >
         Add
       </button>
-      {displayAddPos ? (
-        <PopUp
-          {...{
-            location: displayAddPos,
-            onClose: () => {
-              setDisplayAddPos(null);
-            },
-            style: { width: "100", background: "#e3e3e3" }
-          }}
-        >
-          <div className="add" style={{ textAlign: "center" }}>
-            <div>Opportunity</div>
-            <div>Position</div>
-            <div>Candidate</div>
-            <div>Customer</div>
-          </div>
-        </PopUp>
-      ) : null}
       <DndProvider backend={Backend}>
         <div className="grid">
           {customers.map(customer => {
             return (
               <Customer
                 {...{
-                  dropDownData: unemployed,
-                  callback: moveCandidate,
+                  candidates: unemployed,
+                  moveCandidate: moveCandidate,
+                  setPopUp: setPopUp,
                   ...customer
                 }}
                 key={customer.id}
@@ -108,6 +116,7 @@ function App() {
           })}
         </div>
       </DndProvider>
+      {popUp}
     </div>
   );
 }
@@ -141,4 +150,10 @@ const getUnemployed = (allCustomers: ICustomer[]): ICandidate[] => {
         if (_position.candidate) emploeyd.push(_position.candidate);
   return candidates.filter(x => !emploeyd.includes(x));
 };
+
+export interface IGlobalProps {
+  moveCandidate: (sourceId: string, targetId?: string | undefined) => void;
+  setPopUp: (value: React.SetStateAction<JSX.Element | null>) => void;
+  candidates: ICandidate[];
+}
 export default App;

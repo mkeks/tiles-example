@@ -13,6 +13,13 @@ code {
     monospace;
 }
 
+button {
+  border: none;
+  text-align: center;
+  border-radius: 15px;
+  height: 2em;
+}
+
 .grid {
   margin: auto;
   justify-content: center;
@@ -25,7 +32,7 @@ code {
 .customer {
   grid-row-end: span 50;
   background: grey;
-  border-radius: 10px;
+  border-radius: 1em;
   text-align: center;
   color: aliceblue;
 }
@@ -53,15 +60,12 @@ code {
 .position button {
   background: lightgrey;
   color: black;
-  border: none;
   width: 20px;
   height: 20px;
-  text-align: center;
   margin: 5px;
   padding: 6px 0;
   font-size: 12px;
   line-height: 0.7;
-  border-radius: 15px;
 }
 
 .position button:active {
@@ -80,11 +84,20 @@ code {
 
 .popUp {
   border-radius: 10px;
+  position: absolute;
   margin: 10px;
   padding: 10px;
   max-height: 400px;
   overflow-y: auto scroll;
   overflow-x: auto;
+}
+
+.popUp.center {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
 }
 
 .candidate:hover {

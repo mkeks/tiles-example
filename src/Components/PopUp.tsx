@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from "react";
 
 type Props = {
-  location: { x: number; y: number };
+  location?: { x: number; y: number };
   onClose: Function;
   style?: React.CSSProperties;
+  className?: string;
 };
 
 export const PopUp: React.FunctionComponent<Props> = props => {
@@ -24,9 +25,8 @@ export const PopUp: React.FunctionComponent<Props> = props => {
 
   const style: React.CSSProperties = {
     background: "white",
-    position: "absolute",
-    top: props.location.y,
-    left: props.location.x,
+    top: props?.location?.y || undefined,
+    left: props?.location?.x || undefined,
     width: 250
   };
   const wrapperRef = useRef(null);
@@ -34,7 +34,7 @@ export const PopUp: React.FunctionComponent<Props> = props => {
 
   return (
     <div
-      className="popUp"
+      className={"popUp " + props.className || ""}
       ref={wrapperRef}
       style={Object.assign(style, props.style)}
     >
