@@ -84,7 +84,7 @@ function App() {
                           className: "center"
                         }}
                       >
-                        AAAAAAASSSSSSS
+                        test
                       </PopUp>
                     )
                   }
